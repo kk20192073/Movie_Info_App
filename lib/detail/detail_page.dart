@@ -6,7 +6,12 @@ import 'package:movie_info_app/ui/detail/widgets/stats_section.dart';
 import 'package:movie_info_app/ui/detail/widgets/studios_section.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key, required String imageUrl, required int index});
+  const DetailPage({
+    super.key,
+    required String imageUrl,
+    required int index,
+    required String heroTag,
+  });
 
   static const movies = [
     {

@@ -26,8 +26,11 @@ class MovieCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    DetailPage(imageUrl: imageUrl, index: index ?? 0),
+                builder: (context) => DetailPage(
+                  imageUrl: imageUrl,
+                  index: index ?? 0,
+                  heroTag: '',
+                ),
               ),
             );
           } else {

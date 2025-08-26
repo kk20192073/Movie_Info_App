@@ -24,8 +24,12 @@ class MovieCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    DetailPage(imageUrl: imageUrl, index: index ?? 0),
+                builder: (context) => DetailPage(
+                  imageUrl: imageUrl,
+                  index: index ?? 0,
+                  heroTag:
+                      'movie-poster-list-$listId-idx${index ?? 0}-ranking${showRanking ? 1 : 0}',
+                ),
               ),
             );
           } else {
@@ -36,37 +40,32 @@ class MovieCard extends StatelessWidget {
         }
       },
       child: Container(
-        width: 140,
+        width: 160,
         margin: const EdgeInsets.only(right: 12, left: 0),
         child: Stack(
           clipBehavior: Clip.none, // 숫자가 바깥으로 나가도 보이도록
           children: [
             // 이미지
             Positioned.fill(
-              child: Hero(
-                // Ensure Hero tag is fully unique using listId, index, showRanking, and imageUrl
-                tag:
-                    'movie-poster-list-$listId-idx${index ?? 0}-ranking${showRanking ? 1 : 0}-url:$imageUrl',
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                    width: 140,
-                    height: 200,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 140,
-                        height: 200,
-                        color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.broken_image,
-                          size: 60,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
-                  ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  width: 160,
+                  height: 200,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 160,
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(
+                        Icons.broken_image,
+                        size: 60,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -114,7 +113,9 @@ class MovieCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220, // 숫자가 커졌으니 살짝 늘림
+      height: showRanking
+          ? 220
+          : 240, // 숫자가 커졌으니 살짝 늘림, non-ranking slightly taller to show full card
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         scrollDirection: Axis.horizontal,
@@ -123,7 +124,12 @@ class MovieCardList extends StatelessWidget {
             SizedBox(width: showRanking ? 20 : 6),
         itemBuilder: (context, index) {
           return Transform.translate(
-            offset: showRanking ? const Offset(20, 0) : const Offset(-12, 6),
+            offset: showRanking
+                ? const Offset(20, 0)
+                : const Offset(
+                    -12,
+                    0,
+                  ), // non-ranking moved up to be fully visible
             child: MovieCard(
               imageUrl: imageUrls[index],
               index: showRanking ? index + 1 : null,
